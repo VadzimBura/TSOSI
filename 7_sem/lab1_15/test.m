@@ -7,22 +7,11 @@ period = 2 * pi;
 nValues = 128;
 
 [discreteSignal, xAxisValues] = computeDiscreteSignalValues(signal, period, nValues);
-% 
-[transformedSignal, computationCost] = discreteFourierTransform(discreteSignal);
 
-plot(discreteSignal);
-% figure
-% plot(xAxisValues, angle(transformedSignal));
+[dft, dftCost] = discreteFourierTransform(discreteSignal);
+[idft, idftCost] = inverseDiscreteFourierTransform(dft);
 
-[transformedSignal1, computationCost] = inverseFastFourierTransform(transformedSignal);
-figure
-plot(real(transformedSignal1));
-% 
-% [transformedSignal2, computationCost] = inverseDiscreteFourierTransform(transformedSignal);
-% figure
-% plot(real(transformedSignal2));
+[fft, fftCost] = fastFourierTransform(discreteSignal);
+[ifft, ifftCost] = inverseFastFourierTransform(fft);
 
-% 
-% [transformedSignal, computationCost] = directFastFourierTransform(discreteSignal);
-% figure
-% plot(xAxisValues, angle(transformedSignal));
+draw(xAxisValues, discreteSignal, dft, dftCost, fft, fftCost, idft, idftCost, ifft, ifftCost);
