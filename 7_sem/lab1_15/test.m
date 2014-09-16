@@ -4,14 +4,15 @@ clear all;
 signal = @(x) (cos(5 * x) + sin(6 * x));
 
 period = 2 * pi;
-nValues = 128;
+nValues = 512;
 
-[discreteSignal, xAxisValues] = computeDiscreteSignalValues(signal, period, nValues);
+[discreteSignal, xAxisValues] = common.getSamples(signal, period, nValues);
 
-[dft, dftCost] = discreteFourierTransform(discreteSignal);
-[idft, idftCost] = inverseDiscreteFourierTransform(dft);
+[dft, dftCost] = common.dft(discreteSignal);
+[idft, idftCost] = common.idft(dft);
 
-[fft, fftCost] = fastFourierTransform(discreteSignal);
-[ifft, ifftCost] = inverseFastFourierTransform(fft);
+[fft, fftCost] = common.fft(discreteSignal);
+[ifft, ifftCost] = common.ifft(fft);
 
-draw(xAxisValues, discreteSignal, dft, dftCost, fft, fftCost, idft, idftCost, ifft, ifftCost);
+draw(xAxisValues, discreteSignal,...
+    dft, dftCost, fft, fftCost, idft, idftCost, ifft, ifftCost);
