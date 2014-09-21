@@ -6,22 +6,19 @@ function [result, computationCost] = fftInner(signal, cost, isInverseTransform)
         result = signal;
         return;
     end
-    
-    odd = signal(2 : 2 : nValues);
-    even = signal(1 : 2 : nValues);    
+    % Since matlab indexes start from 1 (and in fft formula - from 0),
+    % even indexes are 1, 3, 5, etc.
+    even = signal(1 : 2 : nValues);
+    odd = signal(2 : 2 : nValues);    
     
     [oddResult, costOdd] = common.fftInner(odd, cost, isInverseTransform);
     [evenResult, costEven] = common.fftInner(even, cost, isInverseTransform);
     
-    direction = common.ternaryOperation(-1, 1, isInverseTransform);    
+    direction = utils.ternaryOperation(-1, 1, isInverseTransform);    
     wN = exp(2i * pi * direction / nValues);
     
-    range = 1 : nValues / 2;
-    ws = ones(nValues / 2);
-    
-    for j = 2 : nValues / 2
-        ws(j) = ws(j - 1) * wN;
-    end
+    range = 1 : nValues / 2;    
+    ws = wN .^ (range - 1);
     
     result = zeros(1, nValues);
     result(range) = evenResult(range) + ws(range) .* oddResult(range);
