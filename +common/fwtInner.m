@@ -1,4 +1,8 @@
 function result = fwtInner(signal)
+    if iscolumn(signal)
+        signal = signal';
+    end
+    
     len = length(signal);    
     
     if len == 1 
